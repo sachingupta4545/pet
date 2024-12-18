@@ -6,7 +6,11 @@ use Livewire\Component;
 
 class ClickButton extends Component
 {
-    public function handle()
+    public $name;
+    public $email;
+    public $password;
+
+    public function createNewUser()
     {
         dump("jsjdasf");
     }
