@@ -32,7 +32,6 @@
             <!-- Page Content -->
             <main>
                 {{ $slot }}
-                @dd("jknlm,")
             </main>
         </div>
         @livewireScripts
