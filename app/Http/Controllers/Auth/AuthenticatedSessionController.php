@@ -12,6 +12,7 @@ use Illuminate\View\View;
 
 class AuthenticatedSessionController extends Controller
 {
+    protected $redirectTo='dashboard';
     /**
      * Display the login view.
      */
@@ -28,9 +29,9 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
 
         $request->session()->regenerate();
-        $allUsers=User::all();
+        $this->findOutAuth();
 
-        return redirect()->intended(route('dashboard', absolute: false)->With('allUsers'));
+        return redirect()->intended(route($this->redirectTo));
     }
 
     /**
@@ -45,5 +46,13 @@ class AuthenticatedSessionController extends Controller
         $request->session()->regenerateToken();
 
         return redirect('/');
+    }
+    public function findOutAuth()
+    {
+        $user=Auth::user();
+        if($user->email === 'admin@gmail.com')
+        {
+            $this->redirectTo="admin.dashboard";
+        }
     }
 }

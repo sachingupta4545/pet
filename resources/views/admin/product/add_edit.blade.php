@@ -1,0 +1,103 @@
+<x-admin-layout>
+    <div class="col-12 grid-margin">
+        <div class="card">
+          <div class="card-body">
+                <h4 class="card-title">Add Product</h4>
+             <form class="form-sample" method="POST" action="{{route('admin.product.store')}}" enctype="multipart/form-data">
+                @csrf
+                <p class="card-description"> Product infomation </p>
+                <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">Name</label>
+                                <div class="col-sm-9">
+                                <input type="text" class="form-control" name="name">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">Slug</label>
+                                <div class="col-sm-9">
+                                <input type="text" class="form-control" name="slug">
+                                </div>
+                            </div>
+                        </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Description</label>
+                            <div class="col-sm-9">
+                            <input type="textarea" class="form-control" name="name">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Is Featured</label>
+                                    <div class="col-sm-9">
+                                    <select class="form-select">
+                                        <option>Yes</option>
+                                        <option>Nope</option>
+                                    </select>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Category</label>
+                                    <div class="col-sm-9">
+                                    <select class="form-select">
+                                        <option>Select Category</option>
+                                        @foreach ($categories as $category)
+                                        <option value="{{$category->id}}">{{$category->name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">Brand</label>
+                                <div class="col-sm-9">
+                                <select class="form-select">
+                                    <option>Select Brand</option>
+                                    @foreach ($brands as $brand)
+                                    <option value="{{$brand->id}}">{{$brand->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        </div>
+                        <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">On Sale</label>
+                            <div class="col-sm-4">
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                <input type="radio" class="form-check-input" name="membershipRadios" id="membershipRadios1" value="" checked=""> Yes <i class="input-helper"></i></label>
+                            </div>
+                            </div>
+                            <div class="col-sm-5">
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                <input type="radio" class="form-check-input" name="membershipRadios" id="membershipRadios2" value="option2"> Nope <i class="input-helper"></i></label>
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+                </div>
+                
+                    <x-primary-button type="submit">
+                        Submit
+                    </x-primary-button>
+             </form>
+          </div>
+        </div>
+      </div>
+</x-admin-layout>
