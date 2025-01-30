@@ -24,14 +24,25 @@ class ProductController extends Controller
       // Store a newly created resource in storage (POST /product)
       public function store(Request $request)
       {
-        dd($request->toArray());
-          $validated = $request->validate([
-              'name' => 'required|string|max:255',
-              'price' => 'required|numeric',
-          ]);
-  
-          Product::create($validated); // Save the new product
-          return redirect()->route('product.index')->with('success', 'Product created successfully.');
+        try {
+            $validatedData = $request->validate([
+                'name' => ['required', 'string', 'max:255'],
+                'slug' => ['required', 'string', 'max:255', 'unique:products,slug'],
+                'description' => ['nullable', 'string'],
+                'isFeatured' => ['required', 'boolean'],
+                'category_id' => ['required', 'integer', 'exists:categories,id'],
+                'brand_id' => ['required', 'integer', 'exists:brands,id'],
+                'on_sale' => ['required', 'boolean'],
+                'price' => ['required', 'integer'],
+                'in_stock' => ['required', 'boolean'],
+            ]);
+        
+            Product::create($validatedData); // Save the new product
+            return redirect()->route('admin.product.index')->with('success', 'Product created successfully.');
+            
+        } catch (\Exception $th) {
+            return redirect()->back()->with('error',$th->getMessage());
+        }
       }
   
       // Display the specified resource (GET /product/{product})

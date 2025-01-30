@@ -30,7 +30,6 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
         $this->findOutAuth();
-
         return redirect()->intended(route($this->redirectTo));
     }
 
@@ -50,8 +49,9 @@ class AuthenticatedSessionController extends Controller
     public function findOutAuth()
     {
         $user=Auth::user();
-        if($user->email === 'admin@gmail.com')
+        if($user->email == 'admin@gmail.com' || $user->id == 2)
         {
+            dd($user);
             $this->redirectTo="admin.dashboard";
         }
     }

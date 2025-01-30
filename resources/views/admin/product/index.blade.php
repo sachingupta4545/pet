@@ -31,16 +31,15 @@
                     @forelse ($products as $product)
                     <tr>
                         <td class="py-1">
-                            <img src="{{storage::url($product->image)}}" alt="image">
+                            <img src="{{Storage::url($product->image)}}" alt="image">
                         </td>
                         <td> {{$product->name ?? "N/A" }}</td>
                         <td> {{$product->slug ?? "N/A"}} </td>
-                        <td>
-                            <div class="progress">
-                            <div class="progress-bar bg-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                        </td>
-                        <td> {{$product->created_at ?? "N/A"}}</td>
+                        <td>{{ $product->price ? '$ '.$product->price : "N/A"}}</td>
+                        <td> {{$product->is_featured ?? "N/A"}}</td>
+                        <td> {{$product->on_sale ?? "N/A"}}</td>
+                        <td> {{$product->is_active ?? "N/A"}}</td>
+                        <td> {{$product->is_stock ?? "N/A"}}</td>
                     </tr>
                     
                     @empty
