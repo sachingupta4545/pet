@@ -20,14 +20,14 @@
             </button>
             <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
                 <div class="navbar-nav mx-auto">
-                    <a href="index.html" class="nav-item nav-link">Home</a>
-                    <a href="shop.html" class="nav-item nav-link active">Shop</a>
-                    <a href="shop-detail.html" class="nav-item nav-link">Shop Detail</a>
+                    <a href="{{route('dashboard')}}" class="nav-item nav-link" wire:navigate>Home</a>
+                    <a href="{{route('shop')}}" class="nav-item nav-link active"wire:navigate>Shop</a>
+                    <a href="{{route('shop.detail')}}" class="nav-item nav-link"wire:navigate>Shop Detail</a>
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
                         <div class="dropdown-menu m-0 bg-secondary rounded-0">
-                            <a href="cart.html" class="dropdown-item">Cart</a>
-                            <a href="chackout.html" class="dropdown-item">Chackout</a>
+                            <a href="{{route('cart')}}" class="dropdown-item" wire::navigate>Cart</a>
+                            <a href="{{route('checkout')}}" class="dropdown-item" wire::navigate>Chackout</a>
                             <a href="testimonial.html" class="dropdown-item">Testimonial</a>
                             <a href="404.html" class="dropdown-item">404 Page</a>
                         </div>
@@ -36,13 +36,22 @@
                 </div>
                 <div class="d-flex m-3 me-0">
                     <button class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search text-primary"></i></button>
-                    <a href="#" class="position-relative me-4 my-auto">
+                    <a href="{{route('checkout')}}" wire::navigate class="position-relative me-4 my-auto">
                         <i class="fa fa-shopping-bag fa-2x"></i>
                         <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 15px; height: 20px; min-width: 20px;">3</span>
                     </a>
-                    <a href="#" class="my-auto">
-                        <i class="fas fa-user fa-2x"></i>
-                    </a>
+                    @auth
+                    <div class="nav-item dropdown">        
+                        <a href="#" class="my-auto">
+                            {{-- <i class="fas fa-user fa-2x"></i> --}}
+                            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fas fa-user fa-2x"></i></a>
+                            <div class="dropdown-menu m-0 bg-secondary rounded-0">
+                                <a href="{{route('cart')}}" class="dropdown-item" wire::navigate>Profile</a>
+                                <a href="{{route('logout')}}" class="dropdown-item" wire::navigate>Logout</a>
+                            </div>
+                        </a>
+                    </div>
+                    @endauth
                 </div>
             </div>
         </nav>
