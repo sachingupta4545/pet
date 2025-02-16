@@ -46,19 +46,23 @@
                                 <div class="mb-3">
                                     <h4>Categories</h4>
                                     <ul class="list-unstyled fruite-categorie">
-                                        <li>
-                                            <div class="d-flex justify-content-between fruite-name">
-                                                <a href="#"><i class="fas fa-apple-alt me-2"></i>Apples</a>
-                                                <span>(3)</span>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="d-flex justify-content-between fruite-name">
-                                                <a href="#"><i class="fas fa-apple-alt me-2"></i>Oranges</a>
-                                                <span>(5)</span>
-                                            </div>
-                                        </li>
-                                        <li>
+                                        @forelse ($categories as $category)
+                                            <li wire:key={{$category->key}}>
+                                                <div class="d-flex justify-content-between fruite-name">
+                                                    <a href="#"><i class="fas fa-apple-alt me-2"></i>{{$category->name ?? 'N/A'}}</a>
+                                                    <span>{{'('. ($category->name ?? 0) .')'}}</span>
+                                                </div>
+                                            </li>    
+                                        @empty
+                                            <li>
+                                                <div class="d-flex justify-content-between fruite-name">
+                                                    <a href="#"><i class="fas fa-apple-alt me-2"></i>Not Available</a>
+                                                    <span>(0)</span>
+                                                </div>
+                                            </li>
+                                        @endforelse
+
+                                        {{-- <li>
                                             <div class="d-flex justify-content-between fruite-name">
                                                 <a href="#"><i class="fas fa-apple-alt me-2"></i>Strawbery</a>
                                                 <span>(2)</span>
@@ -75,7 +79,7 @@
                                                 <a href="#"><i class="fas fa-apple-alt me-2"></i>Pumpkin</a>
                                                 <span>(5)</span>
                                             </div>
-                                        </li>
+                                        </li> --}}
                                     </ul>
                                 </div>
                             </div>

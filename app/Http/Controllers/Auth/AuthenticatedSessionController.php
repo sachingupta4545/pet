@@ -51,7 +51,6 @@ class AuthenticatedSessionController extends Controller
         $user=Auth::user();
         if($user->email == 'admin@gmail.com' || $user->id == 2)
         {
-            dd($user);
             $this->redirectTo="admin.dashboard";
         }
     }

@@ -12,7 +12,7 @@ class CategoryController extends Controller
 {
     public function index()
     {
-        $categories= category::all();
+        $categories= $this->getCategories();
         return view('admin.category.index',compact('categories'));
     }
     public function add(Request $request)
@@ -78,5 +78,10 @@ class CategoryController extends Controller
             throw new \Exception("Error while uploading image: " . $th->getMessage());
         }
         
+    }
+
+    public function getCategories()
+    {
+        return Category::all();
     }
 }
