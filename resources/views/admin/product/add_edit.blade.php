@@ -3,7 +3,7 @@
         <div class="card">
             <div class="card-body">
                 <h4 class="card-title">Add Product</h4>
-                <form class="form-sample" method="POST" action="{{ route('admin.product.store') }}"
+                <form class="form-sample" method="POST" enctype="multipart/form-data" action="{{ route('admin.product.store') }}"
                     enctype="multipart/form-data">
                     @csrf
                     <p class="card-description"> Product infomation </p>
@@ -26,11 +26,19 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Description</label>
                                 <div class="col-sm-9">
                                     <input type="textarea" class="form-control" name="description">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">Image</label>
+                                <div class="col-sm-9">
+                                    <input type="file" class="form-control" name="images[]">
                                 </div>
                             </div>
                         </div>

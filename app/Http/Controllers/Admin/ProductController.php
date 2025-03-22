@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 use App\Models\{Brand, Category, User,Product};
 
 class ProductController extends Controller
@@ -25,21 +27,38 @@ class ProductController extends Controller
       public function store(Request $request)
       {
         try {
-            $validatedData = $request->validate([
-                'name' => ['required', 'string', 'max:255'],
-                'slug' => ['required', 'string', 'max:255', 'unique:products,slug'],
-                'description' => ['nullable', 'string'],
-                'isFeatured' => ['required', 'boolean'],
-                'category_id' => ['required', 'integer', 'exists:categories,id'],
-                'brand_id' => ['required', 'integer', 'exists:brands,id'],
-                'on_sale' => ['required', 'boolean'],
-                'price' => ['required', 'integer'],
-                'in_stock' => ['required', 'boolean'],
-            ]);
-        
-            Product::create($validatedData); // Save the new product
-            return redirect()->route('admin.product.index')->with('success', 'Product created successfully.');
-            
+            // Validate request data
+        $validatedData = $request->validate([
+            'name'        => ['required', 'string', 'max:255'],
+            'slug'        => ['required', 'string', 'max:255', 'unique:products,slug'],
+            'description' => ['nullable', 'string'],
+            'isFeatured'  => ['required', 'boolean'],
+            'category_id' => ['required', 'integer', 'exists:categories,id'],
+            'brand_id'    => ['required', 'integer', 'exists:brands,id'],
+            'on_sale'     => ['required', 'boolean'],
+            'price'       => ['required', 'numeric', 'min:0'],
+            'in_stock'    => ['required', 'boolean'],
+            'images'      => ['nullable', 'array'], // Allow multiple images
+            'images.*'    => ['image', 'mimes:jpeg,png,jpg,webp', 'max:2048'], // Validate each image
+        ]);
+
+        // Handle image upload using Storage
+        $uploadedImages = [];
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {
+                $imageName = Str::random(10) . '.' . $image->getClientOriginalExtension(); // Unique filename
+                $path = $image->storeAs('products', $imageName, 'public'); // Store in storage/app/public/products
+                $uploadedImages[] = $path; // Generate accessible URL
+            }
+        }
+
+        // Store product with JSON-encoded image URLs
+        $product = Product::create(array_merge($validatedData, [
+            'images' => json_encode($uploadedImages), // Store image URLs as JSON
+        ]));
+
+
+        return redirect()->route('admin.product.index')->with('success', 'Product created successfully.');
         } catch (\Exception $th) {
             return redirect()->back()->with('error',$th->getMessage());
         }
@@ -74,6 +93,11 @@ class ProductController extends Controller
       {
           $product->delete(); // Delete the product
           return redirect()->route('product.index')->with('success', 'Product deleted successfully.');
+      }
+
+      public function getProducts()
+      {
+        return Product::where('is_stock','>',0)->paginate(10);
       }
 }
 
