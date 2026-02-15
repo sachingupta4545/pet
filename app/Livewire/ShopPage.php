@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Livewire;
 
 use App\Models\Product;
@@ -27,31 +26,34 @@ class ShopPage extends Component
         $this->resetPage(); // Reset pagination when category changes
     }
 
-
-    public function updateSorting($sortingparam)
+    // Livewire automatically calls this when sorting changes
+    public function updatedSorting()
     {
-        Log::info('Sorting Updated:', ['sorting' => $this->sorting]); // Debugging Log
-        $this->sorting=$sortingparam;
-        $this->resetPage(); // Reset pagination when sorting changes
+        Log::info('Sorting Updated:', ['sorting' => $this->sorting]);
+        $this->resetPage(); // Ensures pagination resets when sorting changes
+        
     }
 
     public function render()
     {
-        Log::info('render:', ['sorting' => $this->sorting]); // Debugging Log
+        // dd($this->sorting); // Check if sorting is updating
+
+        Log::info('Render called:', ['sorting' => $this->sorting, 'category' => $this->selectedCategory,'time'=>now()]);
+
         $products = Product::when($this->selectedCategory, function ($query) {
             return $query->where('category_id', $this->selectedCategory);
         })
-            ->when($this->sorting, function ($query) {
-                if ($this->sorting === 'asc') {
-                    return $query->orderBy('price', 'asc');
-                } elseif ($this->sorting === 'desc') {
-                    return $query->orderBy('price', 'desc');
-                } elseif ($this->sorting === 'on_sale') {
-                    return $query->orderByDesc('on_sale')->orderBy('price', 'asc'); // Prioritize on_sale, then sort by price
-                }
-            })
-            ->paginate(5);
-            dd($products);
+        ->when($this->sorting, function ($query) {
+            if ($this->sorting === 'asc') {
+                return $query->orderBy('price', 'asc');
+            } elseif ($this->sorting === 'desc') {
+                return $query->orderBy('price', 'desc');
+            } elseif ($this->sorting === 'on_sale') {
+                return $query->orderByDesc('on_sale')->orderBy('price', 'asc'); 
+            }
+        })
+        ->paginate(5);
+
         return view('livewire.shop-page', compact('products'));
     }
 }

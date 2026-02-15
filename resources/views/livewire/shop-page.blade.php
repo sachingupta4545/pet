@@ -27,42 +27,43 @@
                                         class="fa fa-search"></i></span>
                             </div>
                         </div>
-                            <div class="col-xl-3">
-                                <div class="bg-light ps-3 py-3 rounded d-flex justify-content-between mb-4">
-                                    <label for="fruits">Default Sorting:</label>
-                                    <select  id="sorting" wire:change="updateSorting($event.target.value)"  class="border-0 form-select-sm bg-light me-3" >
-                                        <option value="on_sale">on_sale</option>
-                                        <option value="asc">Price: Low to High</option>
-                                        <option value="desc">Price: High to Low</option>
-                                    </select>
-                                </div>
-                            </div>
-                    </div>
-                    <div class="row g-4">
-                        <div class="col-lg-3">
-                            <div class="row g-4">
-                                <div class="col-lg-12">
-                                    <div class="mb-3">
-                                        <h4>Categories</h4>
-                                        <ul class="list-unstyled fruite-categorie">
-                                            @forelse ($categories as $category)
-                                                <li wire:click="selectCategory({{ $category->id }})"
-                                                    wire:key="{{ $category->id }}"
-                                                    class="cursor-pointer {{ $selectedCategory == $category->id ? 'fw-bold text-primary' : '' }}">
-                                                    <div class="d-flex justify-content-between fruite-name">
-                                                        <a href="javascript:void(0);" class="text-decoration-none">
-                                                            <i
-                                                                class="fas fa-apple-alt me-2"></i>{{ $category->name ?? 'N/A' }}
-                                                        </a>
-                                                        <span>({{ $category->products->count() ?? 0 }})</span>
-                                                    </div>
-                                                </li>
-                                            @empty
-                                                <li>No Categories Available</li>
-                                            @endforelse
-                                        </ul>
+                                <div class="col-xl-3">
+                                    <div class="bg-light ps-3 py-3 rounded d-flex justify-content-between mb-4">
+                                        <label for="sorting">Default Sorting:</label>
+                                        <select id="sorting" wire:model.change="sorting" class="border-0 form-select-sm bg-light me-3">
+                                            <option value="on_sale">On Sale</option>
+                                            <option value="asc">Price: Low to High</option>
+                                            <option value="desc">Price: High to Low</option>
+                                        </select>
+                                        
                                     </div>
                                 </div>
+                        </div>
+                        <div class="row g-4">
+                            <div class="col-lg-3">
+                                <div class="row g-4">
+                                    <div class="col-lg-12">
+                                        <div class="mb-3">
+                                            <h4>Categories</h4>
+                                            <ul class="list-unstyled fruite-categorie">
+                                                @forelse ($categories as $category)
+                                                    <li wire:click="selectCategory({{ $category->id }})"
+                                                        wire:key="{{ $category->id }}"
+                                                        class="cursor-pointer {{ $selectedCategory == $category->id ? 'fw-bold text-primary' : '' }}">
+                                                        <div class="d-flex justify-content-between fruite-name">
+                                                            <a href="javascript:void(0);" class="text-decoration-none">
+                                                                <i
+                                                                    class="fas fa-apple-alt me-2"></i>{{ $category->name ?? 'N/A' }}
+                                                            </a>
+                                                            <span>({{ $category->products->count() ?? 0 }})</span>
+                                                        </div>
+                                                    </li>
+                                                @empty
+                                                    <li>No Categories Available</li>
+                                                @endforelse
+                                            </ul>
+                                        </div>
+                                    </div>
                                 <div class="col-lg-12">
                                     <div class="mb-3">
                                         <h4 class="mb-2">Price</h4>
@@ -250,7 +251,7 @@
 
                                 <!-- Pagination -->
                                 <div class="mt-4 flex justify-center">
-                                    {{ $products->links('vendor.pagination.bootstrap-4') }}
+                                    {{ $products->appends(['category' => $selectedCategory, 'sort' => $sorting])->links('vendor.pagination.bootstrap-4') }}
 
                                 </div>
 
